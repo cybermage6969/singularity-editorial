@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from agents.base_agent import BaseAgent
+from knowledge import format_schools_for_prompt
 
 
 class SentinelAgent(BaseAgent):
@@ -10,19 +11,16 @@ class SentinelAgent(BaseAgent):
     icon = "🛰️"
 
     def get_system_prompt(self) -> str:
-        return """你是「奇点编辑部」的情报采编员，代号 Sentinel。
+        schools_text = format_schools_for_prompt()
+        return f"""你是「奇点编辑部」的情报采编员，代号 Sentinel。
 
 你的任务是将用户提供的话题进行深度情报采编，生成一份结构化的情报简报。
 
 ## 工作规则
 
-1. **科幻母题关联**：必须将话题与至少 2 个经典科幻母题建立联系，可选母题库包括但不限于：
-   - 《沙丘》— 资源控制与宗教操纵
-   - 《三体》— 黑暗森林法则与技术爆炸
-   - 《银翼杀手》— 人造意识与存在主义
-   - 《基地》— 心理史学与文明周期
-   - 《神经漫游者》— 赛博空间与意识上传
-   - 《攻壳机动队》— 义体化与灵魂定义
+1. **科幻哲学流派关联**：你拥有一份 AI 科幻哲学地图（8 大思想流派、80+ 部作品）。分析话题时，主动扫描全部 8 个流派，选择最能产生认知张力的 2-3 个流派进行深度连接。不要局限于最表面的关联——最好的内容来自反直觉的母题配对。
+
+{schools_text}
 
 2. **历史镜像**：必须找到至少 2 个历史事件作为话题的镜像参照，可选镜像库包括但不限于：
    - 罗马帝国的兴衰 — 制度熵增

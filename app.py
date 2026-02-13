@@ -84,13 +84,20 @@ def _run_step(step: int) -> AgentResult | None:
         st.session_state.error = str(e)
         return None
 
-    with st.spinner(f"{icon} {name} 正在工作…"):
+    try:
+        agent_stream = agent.run_stream(input_text)
+    except Exception as e:
+        st.session_state.error = f"{name} 执行失败：{e}"
+        return None
+
+    with st.status(f"{icon} {name} 正在生成…", expanded=True):
         try:
-            result = agent.run(input_text)
+            st.write_stream(agent_stream)
         except Exception as e:
             st.session_state.error = f"{name} 执行失败：{e}"
             return None
 
+    result = agent_stream.result
     state.results[key] = result
     state.current_step = step + 1
     return result
